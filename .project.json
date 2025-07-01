@@ -47,8 +47,8 @@
     "excludedFiles": []
   },
   "mockpreview": {
-    "mockUri": "/sap/opu/odata/sap/ZSEGW_SF_SRV",
-    "metadataFilePath": "",
+    "mockUri": "/sap/opu/odata/sap/ZSEGW_EMPLOGIN_SRV/",
+    "metadataFilePath": "localService/metadata.xml",
     "loadJSONFiles": false,
     "loadCustomRequests": false,
     "mockRequestsFilePath": ""
