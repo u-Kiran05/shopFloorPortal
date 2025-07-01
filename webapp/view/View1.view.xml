@@ -1,0 +1,37 @@
+<mvc:View controllerName="shopFloor.controller.View1"
+          xmlns:mvc="sap.ui.core.mvc"
+          xmlns="sap.m"
+          xmlns:f="sap.ui.layout.form"
+          displayBlock="true"
+     
+          >
+
+    <Page title="Shop Floor Portal - Login">
+        <content>
+            <VBox class="sapUiSmallMargin">
+            	<MessageStrip id="msgStrip"
+              visible="false"
+              type="Information"
+              showIcon="true"
+              showCloseButton="false"
+              text="" />
+
+                <f:SimpleForm id="SimpleFormLogin" editable="true"
+                              layout="ResponsiveGridLayout"
+                              labelSpanXL="3" labelSpanL="3" labelSpanM="3"
+                              labelSpanS="12" emptySpanXL="4" emptySpanL="4"
+                              emptySpanM="4" emptySpanS="0"
+                              columnsXL="1" columnsL="1" columnsM="1"
+                              singleContainerFullSize="false">
+                    <f:content>
+                        <Label text="User ID*"/>
+                        <Input id="userIdInput" placeholder="Enter User ID"/>
+                        <Label text="Password*"/>
+                        <Input id="passwordInput" type="Password" placeholder="Enter Password"/>
+                        <Button text="Login" press="onLoginPress" type="Emphasized"/>
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

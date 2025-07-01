@@ -1,0 +1,92 @@
+<mvc:View controllerName="shopFloor.controller.Dashboard" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:core="sap.ui.core">
+	<Page>
+		<customHeader>
+			<Bar>
+				<contentLeft>
+					<Button icon="sap-icon://log" text="Logout" press="onLogoutPress"/>
+				</contentLeft>
+				<contentMiddle>
+					<Title text="Shop Floor Portal - Planned Orders Dashboard"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<!-- Filter Section -->
+			<HBox class="sapUiSmallMargin" alignItems="Center" justifyContent="SpaceBetween">
+				<Input id="plantId" placeholder="Enter Plant ID" width="200px" liveChange="onFilterChange"/>
+				<Select id="yearPicker" width="150px" change="onFilterChange">
+					<core:Item key="2023" text="2023"/>
+					<core:Item key="2024" text="2024"/>
+					<core:Item key="2025" text="2025"/>
+				</Select>
+				<Select id="monthPicker" width="150px" change="onFilterChange">
+					<core:Item key="" text="All Months"/>
+					<core:Item key="01" text="January"/>
+					<core:Item key="02" text="February"/>
+					<core:Item key="03" text="March"/>
+					<core:Item key="04" text="April"/>
+					<core:Item key="05" text="May"/>
+					<core:Item key="06" text="June"/>
+					<core:Item key="07" text="July"/>
+					<core:Item key="08" text="August"/>
+					<core:Item key="09" text="September"/>
+					<core:Item key="10" text="October"/>
+					<core:Item key="11" text="November"/>
+					<core:Item key="12" text="December"/>
+				</Select>
+				<Button text="Apply Filter" press="onApplyFilter"/>
+			</HBox>
+			<!-- KPI Cards -->
+			<layout:Grid defaultSpan="L3 M6 S12" class="sapUiMediumMarginTop">
+				<Panel headerText="Total Orders" class="cardStyle">
+					<VBox class="sapUiSmallMargin">
+						<ObjectNumber id="totalOrders" number="{chart>/totalOrders}" unit="Orders" class="kpiBlue"/>
+					</VBox>
+				</Panel>
+				<Panel headerText="Total Quantity" class="cardStyle">
+					<VBox class="sapUiSmallMargin">
+						<ObjectNumber id="totalQty" number="{chart>/totalQty}" unit="Qty" class="kpiGreen"/>
+					</VBox>
+				</Panel>
+				<Panel headerText="Materials" class="cardStyle">
+					<VBox class="sapUiSmallMargin">
+						<ObjectNumber id="uniqueMaterials" number="{chart>/uniqueMaterials}" unit="Items" class="kpiOrange"/>
+					</VBox>
+				</Panel>
+				<Panel headerText="Controllers" class="cardStyle">
+					<VBox class="sapUiSmallMargin">
+						<ObjectNumber id="uniqueControllers" number="{chart>/uniqueControllers}" unit="Users" class="kpiPurple"/>
+					</VBox>
+				</Panel>
+			</layout:Grid>
+			<!-- Chart Panels -->
+			<layout:Grid defaultSpan="L6 M6 S12" class="sapUiMediumMarginTop">
+				<Panel headerText="Planned Orders by Month" class="chartPanel chartBlue">
+					<viz:VizFrame id="ordersByMonthChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Orders by Material (Donut)" class="chartPanel chartGreen">
+					<viz:VizFrame id="materialChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Orders by Controller (Stacked Bar)" class="chartPanel chartOrange">
+					<viz:VizFrame id="controllerChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Status Distribution (Stacked Column)" class="chartPanel chartPurple">
+					<viz:VizFrame id="statusChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Orders by Year-Month (Combination)" class="chartPanel chartCyan">
+					<viz:VizFrame id="ordersYearMonthChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Orders by Planner Group (Heatmap)" class="chartPanel chartRed">
+					<viz:VizFrame id="plannerGroupChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Quantity Trend by Month (Line)" class="chartPanel chartPink">
+					<viz:VizFrame id="qtyTrendChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Lead Time Distribution (Pie)" class="chartPanel chartTeal">
+					<viz:VizFrame id="leadTimeChart" width="100%" height="200px"/>
+				</Panel>
+			</layout:Grid>
+		</content>
+	</Page>
+</mvc:View>
