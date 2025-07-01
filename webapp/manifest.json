@@ -119,6 +119,10 @@
 				"pattern": "Dashboard",
 				"name": "Dashboard",
 				"target": "Dashboard"
+			}, {
+				"pattern": "Dashboard2",
+				"name": "Dashboard2",
+				"target": "Dashboard2"
 			}],
 			"targets": {
 				"View1": {
@@ -126,6 +130,12 @@
 					"viewName": "View1",
 					"transition": "fade"
 				},
+				"Dashboard2": {
+					"viewId": "Dashboard2",
+					"viewName": "Dashboard2",
+					"transition": "fade"
+				},
+
 				"Dashboard": {
 					"viewId": "Dashboard",
 					"viewName": "Dashboard",

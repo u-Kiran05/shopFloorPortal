@@ -9,6 +9,9 @@
 				<contentMiddle>
 					<Title text="Shop Floor Portal - Planned Orders Dashboard"/>
 				</contentMiddle>
+				<contentRight>
+					<Button icon="sap-icon://navigation-right-arrow" text="Next" press="onNextPress"/>
+				</contentRight>
 			</Bar>
 		</customHeader>
 		<content>

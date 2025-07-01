@@ -1,0 +1,103 @@
+<mvc:View controllerName="shopFloor.controller.Dashboard2"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:layout="sap.ui.layout"
+	xmlns:viz="sap.viz.ui5.controls"
+	xmlns:core="sap.ui.core">
+
+	<Page>
+		<customHeader>
+			<Bar>
+				<contentLeft>
+					<Button icon="sap-icon://nav-back" text="Back" press="onBackPress"/>
+				</contentLeft>
+				<contentMiddle>
+					<Title text="Shop Floor Portal - Production Orders Dashboard"/>
+				</contentMiddle>
+				<contentRight>
+					<Button icon="sap-icon://log" text="Logout" press="onLogoutPress"/>
+				</contentRight>
+			</Bar>
+		</customHeader>
+
+		<content>
+			<!-- Filter Section -->
+			<HBox class="sapUiSmallMargin" alignItems="Center" justifyContent="SpaceBetween">
+				<Input id="plantId" placeholder="Enter Plant ID" width="200px" liveChange="onFilterChange"/>
+				<Select id="yearPicker" width="150px" change="onFilterChange">
+					<core:Item key="2023" text="2023"/>
+					<core:Item key="2024" text="2024"/>
+					<core:Item key="2025" text="2025"/>
+				</Select>
+				<Select id="monthPicker" width="150px" change="onFilterChange">
+					<core:Item key="" text="All Months"/>
+					<core:Item key="01" text="January"/>
+					<core:Item key="02" text="February"/>
+					<core:Item key="03" text="March"/>
+					<core:Item key="04" text="April"/>
+					<core:Item key="05" text="May"/>
+					<core:Item key="06" text="June"/>
+					<core:Item key="07" text="July"/>
+					<core:Item key="08" text="August"/>
+					<core:Item key="09" text="September"/>
+					<core:Item key="10" text="October"/>
+					<core:Item key="11" text="November"/>
+					<core:Item key="12" text="December"/>
+				</Select>
+				<Button text="Apply Filter" press="onApplyFilter"/>
+			</HBox>
+
+			<!-- KPI Cards -->
+			<layout:Grid defaultSpan="L3 M6 S12" class="sapUiMediumMarginTop">
+				<Panel headerText="Total Orders" class="cardStyle">
+					<VBox class="sapUiSmallMargin">
+						<ObjectNumber id="totalOrdersProd" number="{chart>/total}" unit="Orders" class="kpiBlue"/>
+					</VBox>
+				</Panel>
+				<Panel headerText="Materials" class="cardStyle">
+					<VBox class="sapUiSmallMargin">
+						<ObjectNumber id="uniqueMaterialsProd" number="{chart>/uniqueMaterials}" unit="Items" class="kpiGreen"/>
+					</VBox>
+				</Panel>
+				<Panel headerText="Plants" class="cardStyle">
+					<VBox class="sapUiSmallMargin">
+						<ObjectNumber id="plantCountProd" number="{chart>/plants}" unit="Units" class="kpiOrange"/>
+					</VBox>
+				</Panel>
+				<Panel headerText="Companies" class="cardStyle">
+					<VBox class="sapUiSmallMargin">
+						<ObjectNumber id="companyCountProd" number="{chart>/companies}" unit="Entities" class="kpiPurple"/>
+					</VBox>
+				</Panel>
+			</layout:Grid>
+
+			<!-- Chart Panels -->
+			<layout:Grid defaultSpan="L6 M6 S12" class="sapUiMediumMarginTop">
+				<Panel headerText="Orders by Type (Pie)" class="chartPanel chartBlue">
+					<viz:VizFrame id="orderTypeChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Orders by Material (Donut)" class="chartPanel chartGreen">
+					<viz:VizFrame id="materialProdChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Orders by Plant (Column)" class="chartPanel chartOrange">
+					<viz:VizFrame id="plantProdChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Orders by Company (Stacked Column)" class="chartPanel chartPurple">
+					<viz:VizFrame id="companyProdChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Quantity Trend by Month (Line)" class="chartPanel chartCyan">
+					<viz:VizFrame id="qtyProdTrendChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Order Status (Heatmap)" class="chartPanel chartRed">
+					<viz:VizFrame id="statusProdChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Order Category (Column)" class="chartPanel chartPink">
+					<viz:VizFrame id="categoryChart" width="100%" height="200px"/>
+				</Panel>
+				<Panel headerText="Orders by Controller (Stacked Bar)" class="chartPanel chartTeal">
+					<viz:VizFrame id="controllerProdChart" width="100%" height="200px"/>
+				</Panel>
+			</layout:Grid>
+		</content>
+	</Page>
+</mvc:View>

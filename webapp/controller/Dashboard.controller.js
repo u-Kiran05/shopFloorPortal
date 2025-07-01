@@ -66,7 +66,7 @@ sap.ui.define([
 				success: this._onDataLoaded.bind(this),
 				error: function(err) {
 					MessageToast.show("Failed to load data");
-					console.error("OData Error:", err);
+				//	console.error("OData Error:", err);
 				}
 			});
 		},
@@ -103,6 +103,9 @@ sap.ui.define([
 				}.bind(this)
 			});
 		},
+onNextPress: function () {
+	this.getOwnerComponent().getRouter().navTo("Dashboard2");
+},
 
 		_bindCharts: function(data) {
 			function groupBy(arr, keyFn) {
