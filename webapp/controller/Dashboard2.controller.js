@@ -12,34 +12,22 @@ sap.ui.define([
 
 		onInit: function() {
 			this.oModel = this.getOwnerComponent().getModel("sf");
-			this.chartModel = new JSONModel({
-				results: []
-			});
+			this.chartModel = new JSONModel({ results: [] });
 			this.getView().setModel(this.chartModel, "chart");
 			this._initCharts();
 		},
 
 		_initCharts: function() {
-			var chartIds = [
-				"orderTypeChart", "materialProdChart", "plantProdChart", "companyProdChart",
-				"qtyProdTrendChart", "statusProdChart", "categoryChart", "controllerProdChart"
-			];
-
+			var chartIds = ["qtyProdTrendChart", "categoryChart"];
 			for (var i = 0; i < chartIds.length; i++) {
 				var oVizFrame = this.byId(chartIds[i]);
 				if (oVizFrame) {
 					oVizFrame.setVizProperties({
 						plotArea: {
-							dataLabel: {
-								visible: true
-							}
+							dataLabel: { visible: true }
 						},
-						legend: {
-							visible: true
-						},
-						title: {
-							visible: false
-						}
+						legend: { visible: true },
+						title: { visible: false }
 					});
 				}
 			}
@@ -73,9 +61,7 @@ sap.ui.define([
 			var results = oData.results || [];
 			this.chartModel.setProperty("/results", results);
 
-			var matSet = {},
-				plantSet = {},
-				compSet = {};
+			var matSet = {}, plantSet = {}, compSet = {};
 			for (var i = 0; i < results.length; i++) {
 				var r = results[i];
 				if (r.Material_No) matSet[r.Material_No] = true;
@@ -92,44 +78,6 @@ sap.ui.define([
 		},
 
 		_bindCharts: function(data) {
-			function groupBy(arr, keyFn) {
-				var result = {};
-				for (var i = 0; i < arr.length; i++) {
-					var key = typeof keyFn === "function" ? keyFn(arr[i]) : arr[i][keyFn];
-					if (key !== undefined && key !== null && key !== "") {
-						key = String(key); // ensure it's a string
-						if (!result[key]) result[key] = 0;
-						result[key]++;
-					}
-				}
-				return result;
-			}
-
-			function groupAndMap(groupObj) {
-				var list = [];
-				for (var label in groupObj) {
-					list.push({
-						label: label,
-						count: groupObj[label]
-					});
-				}
-				return list;
-			}
-
-			//console.log("Sample record:", data[0]);
-
-			// Log check for each field
-			// Sample record
-			//console.log("Sample record:", data[0]);
-
-			// Replace arrow functions with ES5 function syntax
-			//console.log("Order_Type_Code values:", data.map(function(d) { return d.Order_Type_Code; }));
-			//console.log("Material_Desc values:", data.map(function(d) { return d.Material_Desc; }));
-			//console.log("Plant_Name values:", data.map(function(d) { return d.Plant_Name; }));
-			//console.log("Companyname values:", data.map(function(d) { return d.Companyname; }));
-			//console.log("Order_Type_Text values:", data.map(function(d) { return d.Order_Type_Text; }));
-			//console.log("Mrpcontrollername values:", data.map(function(d) { return d.Mrpcontrollername; }));
-
 			var qtyTrend = {};
 			for (var j = 0; j < data.length; j++) {
 				var item = data[j];
@@ -140,41 +88,42 @@ sap.ui.define([
 				}
 			}
 
-			this._setChartDataset("orderTypeChart", groupAndMap(groupBy(data, "Order_Type_Code")), "Type", "Count");
-			this._setChartDataset("materialProdChart", groupAndMap(groupBy(data, "Material_Desc")), "Material", "Count");
-			this._setChartDataset("plantProdChart", groupAndMap(groupBy(data, "Plant_Name")), "Plant", "Count");
-			this._setChartDataset("companyProdChart", groupAndMap(groupBy(data, "Companyname")), "Company", "Count");
-			this._setChartDataset("qtyProdTrendChart", groupAndMap(qtyTrend), "Month", "Quantity");
-			this._setChartDataset("statusProdChart", groupAndMap(groupBy(data, "Order_Type_Text")), "Status", "Count");
-			this._setChartDataset("categoryChart", groupAndMap(groupBy(data, "Ordercategory")), "Category", "Count");
-			this._setChartDataset("controllerProdChart", groupAndMap(groupBy(data, "Mrpcontrollername")), "Controller", "Count");
+			this._setChartDataset("qtyProdTrendChart", this._groupAndMap(qtyTrend), "Month", "Quantity");
+			this._setChartDataset("categoryChart", this._groupAndMap(this._groupBy(data, "Ordercategory")), "Category", "Count");
+		},
+		onFilterChange: function() {
+    // Optional: auto-apply filter on every selection change
+    this.onApplyFilter();
+},
+
+		_groupBy: function(arr, keyFn) {
+			var result = {};
+			for (var i = 0; i < arr.length; i++) {
+				var key = typeof keyFn === "function" ? keyFn(arr[i]) : arr[i][keyFn];
+				if (key !== undefined && key !== null && key !== "") {
+					key = String(key);
+					if (!result[key]) result[key] = 0;
+					result[key]++;
+				}
+			}
+			return result;
+		},
+
+		_groupAndMap: function(groupObj) {
+			var list = [];
+			for (var label in groupObj) {
+				list.push({ label: label, count: groupObj[label] });
+			}
+			return list;
 		},
 
 		_setChartDataset: function(chartId, data, dim, measure) {
 			var oViz = this.byId(chartId);
-			if (!oViz) {
-				//console.warn("Chart ID not found:", chartId);
-				return;
-			}
-
-			if (!data || data.length === 0) {
-				//console.warn("No data for chart:", chartId);
-				return;
-			}
-
-			//	console.log("Rendering chart:", chartId);
-			//console.log("Dimension:", dim, "Measure:", measure);
-			//console.log("Chart Data:", data);
+			if (!oViz || !data || data.length === 0) return;
 
 			var typeMap = {
-				"orderTypeChart": "pie",
-				"materialProdChart": "donut",
-				"plantProdChart": "column",
-				"companyProdChart": "stacked_column",
 				"qtyProdTrendChart": "line",
-				"statusProdChart": "heatmap",
-				"categoryChart": "column",
-				"controllerProdChart": "stacked_bar"
+				"categoryChart": "column"
 			};
 
 			try {
@@ -184,80 +133,35 @@ sap.ui.define([
 				oViz.removeAllFeeds();
 
 				var oDataset = new FlattenedDataset({
-					dimensions: [{
-						name: dim,
-						value: "{label}"
-					}],
-					measures: [{
-						name: measure,
-						value: "{count}"
-					}],
-					data: {
-						path: "/chartData"
-					}
+					dimensions: [{ name: dim, value: "{label}" }],
+					measures: [{ name: measure, value: "{count}" }],
+					data: { path: "/chartData" }
 				});
 
-				var oModel = new JSONModel({
-					chartData: data
-				});
+				var oModel = new JSONModel({ chartData: data });
 				oViz.setDataset(oDataset);
 				oViz.setModel(oModel);
 
 				var feeds = this._getFeedsForType(type, dim, measure);
-				//	console.log("Feed config for", chartId, ":", feeds);
 				for (var i = 0; i < feeds.length; i++) {
 					oViz.addFeed(new FeedItem(feeds[i]));
 				}
 			} catch (e) {
-				//console.error("Chart error in " + chartId + ":", e);
+				console.error("Chart error in " + chartId + ":", e);
 			}
 		},
 
 		_getFeedsForType: function(type, dim, measure) {
-			if (type === "pie" || type === "donut") {
-				return [{
-					uid: "size",
-					type: "Measure",
-					values: [measure]
-				}, {
-					uid: "color",
-					type: "Dimension",
-					values: [dim]
-				}];
-			} else if (type === "heatmap") {
-				return [{
-					uid: "color",
-					type: "Measure",
-					values: [measure]
-				}, {
-					uid: "categoryAxis",
-					type: "Dimension",
-					values: [dim]
-				}, {
-					uid: "valueAxis",
-					type: "Dimension",
-					values: [dim]
-				}];
-			} else if (type === "line") {
-				return [{
-					uid: "valueAxis",
-					type: "Measure",
-					values: [measure]
-				}, {
-					uid: "categoryAxis",
-					type: "Dimension",
-					values: [dim]
-				}];
+			if (type === "line") {
+				return [
+					{ uid: "valueAxis", type: "Measure", values: [measure] },
+					{ uid: "categoryAxis", type: "Dimension", values: [dim] }
+				];
 			} else {
-				return [{
-					uid: "valueAxis",
-					type: "Measure",
-					values: [measure]
-				}, {
-					uid: "categoryAxis",
-					type: "Dimension",
-					values: [dim]
-				}];
+				return [
+					{ uid: "valueAxis", type: "Measure", values: [measure] },
+					{ uid: "categoryAxis", type: "Dimension", values: [dim] }
+				];
 			}
 		}
 	});
