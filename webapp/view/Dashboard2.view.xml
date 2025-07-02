@@ -4,7 +4,6 @@
 	xmlns:layout="sap.ui.layout"
 	xmlns:viz="sap.viz.ui5.controls"
 	xmlns:core="sap.ui.core">
-
 	<Page>
 		<customHeader>
 			<Bar>
