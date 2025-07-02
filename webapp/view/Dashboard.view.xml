@@ -63,33 +63,60 @@
 					</VBox>
 				</Panel>
 			</layout:Grid>
-			<!-- Chart Panels -->
-			<layout:Grid defaultSpan="L6 M6 S12" class="sapUiMediumMarginTop">
+			<!-- Chart Panels (3 per row) -->
+			<layout:Grid defaultSpan="L4 M6 S12" class="sapUiMediumMarginTop">
 				<Panel headerText="Planned Orders by Month" class="chartPanel chartBlue">
-					<viz:VizFrame id="ordersByMonthChart" width="100%" height="200px"/>
+					<viz:VizFrame id="ordersByMonthChart" width="100%" height="250px"/>
 				</Panel>
-				<Panel headerText="Orders by Material (Donut)" class="chartPanel chartGreen">
-					<viz:VizFrame id="materialChart" width="100%" height="200px"/>
+				<Panel headerText="Orders by Material " class="chartPanel chartGreen">
+					<viz:VizFrame id="materialChart" width="100%" height="250px"/>
 				</Panel>
-				<Panel headerText="Orders by Controller (Stacked Bar)" class="chartPanel chartOrange">
-					<viz:VizFrame id="controllerChart" width="100%" height="200px"/>
+				<Panel headerText="Orders by Controller" class="chartPanel chartOrange">
+					<viz:VizFrame id="controllerChart" width="100%" height="250px"/>
 				</Panel>
-				<Panel headerText="Status Distribution (Stacked Column)" class="chartPanel chartPurple">
-					<viz:VizFrame id="statusChart" width="100%" height="200px"/>
+				<Panel headerText="Status Distribution " class="chartPanel chartPurple">
+					<viz:VizFrame id="statusChart" width="100%" height="250px"/>
 				</Panel>
-				<Panel headerText="Orders by Year-Month (Combination)" class="chartPanel chartCyan">
-					<viz:VizFrame id="ordersYearMonthChart" width="100%" height="200px"/>
+				<Panel headerText="Quantity Trend by Month" class="chartPanel chartPink">
+					<viz:VizFrame id="qtyTrendChart" width="100%" height="250px"/>
 				</Panel>
-				<Panel headerText="Orders by Planner Group (Heatmap)" class="chartPanel chartRed">
-					<viz:VizFrame id="plannerGroupChart" width="100%" height="200px"/>
-				</Panel>
-				<Panel headerText="Quantity Trend by Month (Line)" class="chartPanel chartPink">
-					<viz:VizFrame id="qtyTrendChart" width="100%" height="200px"/>
-				</Panel>
-				<Panel headerText="Lead Time Distribution (Pie)" class="chartPanel chartTeal">
-					<viz:VizFrame id="leadTimeChart" width="100%" height="200px"/>
+				<Panel headerText="Lead Time Distribution" class="chartPanel chartTeal">
+					<viz:VizFrame id="leadTimeChart" width="100%" height="250px"/>
 				</Panel>
 			</layout:Grid>
+			<!-- Table Card -->
+			<Panel headerText="Planned Orders Table" class="sapUiMediumMarginTop">
+				<Table items="{chart>/results}">
+					<columns>
+						<Column><Text text="Order No"/></Column>
+						<Column><Text text="Material"/></Column>
+						<Column><Text text="Quantity"/></Column>
+						<Column><Text text="Unit"/></Column>
+						<Column><Text text="Plant"/></Column>
+						<Column><Text text="Planner Group"/></Column>
+						<Column><Text text="Controller"/></Column>
+						<Column><Text text="Status"/></Column>
+						<Column><Text text="Start Date"/></Column>
+						<Column><Text text="End Date"/></Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{chart>Orderno}"/>
+								<Text text="{chart>Matdesc}"/>
+								<Text text="{chart>Orderquant}"/>
+								<Text text="{chart>Unit}"/>
+								<Text text="{chart>Plantname}"/>
+								<Text text="{chart>Groupname}"/>
+								<Text text="{chart>Controllername}"/>
+								<Text text="{chart>Statustxt}"/>
+								<Text text="{path: 'chart>Startdate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"/>
+								<Text text="{path: 'chart>Enddate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
 		</content>
 	</Page>
 </mvc:View>

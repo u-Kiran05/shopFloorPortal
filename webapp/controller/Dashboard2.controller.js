@@ -17,6 +17,19 @@ sap.ui.define([
 			this._initCharts();
 		},
 
+		onBackPress: function() {
+			sap.ui.core.UIComponent.getRouterFor(this).navTo("Dashboard");
+		},
+
+		onLogoutPress: function() {
+			var oSessionModel = this.getOwnerComponent().getModel("session");
+			if (oSessionModel) {
+				oSessionModel.setData({});
+			}
+			sap.ui.core.UIComponent.getRouterFor(this).navTo("View1", {}, true);
+			sap.m.MessageToast.show("You have been logged out.");
+		},
+
 		_initCharts: function() {
 			var chartIds = ["qtyProdTrendChart", "categoryChart"];
 			for (var i = 0; i < chartIds.length; i++) {
@@ -57,6 +70,10 @@ sap.ui.define([
 			});
 		},
 
+		onFilterChange: function() {
+			this.onApplyFilter();
+		},
+
 		_onDataLoaded: function(oData) {
 			var results = oData.results || [];
 			this.chartModel.setProperty("/results", results);
@@ -78,23 +95,26 @@ sap.ui.define([
 		},
 
 		_bindCharts: function(data) {
+			var monthNames = {
+				"01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr",
+				"05": "May", "06": "Jun", "07": "Jul", "08": "Aug",
+				"09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec"
+			};
+
 			var qtyTrend = {};
 			for (var j = 0; j < data.length; j++) {
 				var item = data[j];
 				var month = item.Startmonth;
+				var label = monthNames[month] || month;
 				var qty = parseFloat(item.Orderquantity || 0);
-				if (month !== "") {
-					qtyTrend[String(month)] = (qtyTrend[month] || 0) + qty;
+				if (label !== "") {
+					qtyTrend[label] = (qtyTrend[label] || 0) + qty;
 				}
 			}
 
 			this._setChartDataset("qtyProdTrendChart", this._groupAndMap(qtyTrend), "Month", "Quantity");
 			this._setChartDataset("categoryChart", this._groupAndMap(this._groupBy(data, "Ordercategory")), "Category", "Count");
 		},
-		onFilterChange: function() {
-    // Optional: auto-apply filter on every selection change
-    this.onApplyFilter();
-},
 
 		_groupBy: function(arr, keyFn) {
 			var result = {};
@@ -142,26 +162,21 @@ sap.ui.define([
 				oViz.setDataset(oDataset);
 				oViz.setModel(oModel);
 
-				var feeds = this._getFeedsForType(type, dim, measure);
+				var feeds = [{
+					uid: "valueAxis",
+					type: "Measure",
+					values: [measure]
+				}, {
+					uid: "categoryAxis",
+					type: "Dimension",
+					values: [dim]
+				}];
+
 				for (var i = 0; i < feeds.length; i++) {
 					oViz.addFeed(new FeedItem(feeds[i]));
 				}
 			} catch (e) {
 				console.error("Chart error in " + chartId + ":", e);
-			}
-		},
-
-		_getFeedsForType: function(type, dim, measure) {
-			if (type === "line") {
-				return [
-					{ uid: "valueAxis", type: "Measure", values: [measure] },
-					{ uid: "categoryAxis", type: "Dimension", values: [dim] }
-				];
-			} else {
-				return [
-					{ uid: "valueAxis", type: "Measure", values: [measure] },
-					{ uid: "categoryAxis", type: "Dimension", values: [dim] }
-				];
 			}
 		}
 	});
