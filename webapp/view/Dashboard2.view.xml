@@ -17,13 +17,13 @@
 		<content>
 			<!-- Filter Section -->
 			<HBox class="sapUiSmallMargin" alignItems="Center" justifyContent="SpaceBetween">
-				<Input id="plantId" placeholder="Enter Plant ID" width="200px" liveChange="onFilterChange"/>
-				<Select id="yearPicker" width="150px" change="onFilterChange">
+				<Input id="plantId" placeholder="Enter Plant ID" width="200px"/>
+				<Select id="yearPicker" width="150px">
 					<core:Item key="2023" text="2023"/>
 					<core:Item key="2024" text="2024"/>
 					<core:Item key="2025" text="2025"/>
 				</Select>
-				<Select id="monthPicker" width="150px" change="onFilterChange">
+				<Select id="monthPicker" width="150px">
 					<core:Item key="" text="All Months"/>
 					<core:Item key="01" text="January"/>
 					<core:Item key="02" text="February"/>
@@ -77,7 +77,6 @@
 				<columns>
 					<Column><Text text="Order No"/></Column>
 					<Column><Text text="Order Type"/></Column>
-				
 					<Column><Text text="Plant"/></Column>
 					<Column><Text text="Company Code"/></Column>
 					<Column><Text text="Category"/></Column>
@@ -89,7 +88,6 @@
 						<cells>
 							<Text text="{chart>Orderno}"/>
 							<Text text="{chart>OrderTypeCode}"/>
-						
 							<Text text="{chart>PlantName}"/>
 							<Text text="{chart>CompanyCode}"/>
 							<Text text="{chart>Ordercategory}"/>
