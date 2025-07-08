@@ -17,7 +17,15 @@
 		<content>
 			<!-- Filter Section -->
 			<HBox class="sapUiSmallMargin" alignItems="Center" justifyContent="SpaceBetween">
-				<Input id="plantId" placeholder="Enter Plant ID" width="200px" liveChange="onFilterChange"/>
+			<Select id="plantSelect" width="250px" change="onFilterChange">
+					<items>
+						<core:ListItem key="0001" text="Werk 0001" icon="sap-icon://factory"/>
+						<core:ListItem key="0003" text="Plant 0003 (is-ht-sw)" icon="sap-icon://building"/>
+						<core:ListItem key="1009" text="Kaar" icon="sap-icon://home"/>
+						<core:ListItem key="2206" text="Amul" icon="sap-icon://nutrition-activity"/>
+						<core:ListItem key="Z001" text="Werk 0001" icon="sap-icon://factory"/>
+					</items>
+				</Select>
 				<Select id="yearPicker" width="150px" change="onFilterChange">
 					<core:Item key="2023" text="2023"/>
 					<core:Item key="2024" text="2024"/>

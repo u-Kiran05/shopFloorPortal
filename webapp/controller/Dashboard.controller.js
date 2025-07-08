@@ -47,7 +47,7 @@ sap.ui.define([
 
 		onApplyFilter: function() {
 			var view = this.getView();
-			var plant = view.byId("plantId").getValue().trim();
+			var plant = this.byId("plantSelect").getSelectedKey();
 			var year = view.byId("yearPicker").getSelectedKey();
 			var month = view.byId("monthPicker").getSelectedKey();
 

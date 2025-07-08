@@ -58,52 +58,38 @@ sap.ui.define([
 		},
 
 		onApplyFilter: function() {
-			var plant = this.byId("plantId").getValue().trim();
+			var plant = this.byId("plantSelect").getSelectedKey();
 			var year = this.byId("yearPicker").getSelectedKey();
 			var month = this.byId("monthPicker").getSelectedKey();
 
 			if (!plant) {
-				MessageToast.show("Please enter Plant ID");
+				sap.m.MessageToast.show("Please select a Plant ID");
 				return;
 			}
 
-			var filters = [
-				new sap.ui.model.Filter("PlantCode", "EQ", plant)
-			];
+			var filters = [new sap.ui.model.Filter("PlantCode", "EQ", plant)];
 
 			if (year) {
-				filters.push(new sap.ui.model.Filter("Endyear", "EQ", year));
+				filters.push(new sap.ui.model.Filter("Startyear", "EQ", year));
 			}
 			if (month) {
-				filters.push(new sap.ui.model.Filter("Endmonth", "EQ", month));
+				filters.push(new sap.ui.model.Filter("Startmonth", "EQ", month));
 			}
 
-			console.log("📤 Filter Parameters:", {
-				Plant: plant,
-				Year: year,
-				Month: month,
-				ODataFilters: filters
-			});
-
+			var that = this;
 			this.oModel.read("/ZProductionDetailsSet", {
 				filters: filters,
 				success: function(oData) {
-					console.log("✅ Raw OData Results:", oData.results || []);
-
-					var filteredResults = oData.results || [];
-
-					// If you want to do additional client-side filtering by date, do it here.
-					// Example: filter by Startdate's year/month if not already done in OData
-
-					console.log("✅ Final Filtered Results Sent to _onDataLoaded:", filteredResults);
-					this._onDataLoaded({
-						results: filteredResults
+					var results = oData.results || [];
+					if (results.length === 0) {
+						sap.m.MessageToast.show("No production data found for the selected filters.");
+					}
+					that._onDataLoaded({
+						results: results
 					});
-				}.bind(this),
-
-				error: function(oError) {
-					console.error("❌ Failed to fetch data from ZProductionDetailsSet", oError);
-					MessageToast.show("Failed to load production data.");
+				},
+				error: function() {
+					sap.m.MessageToast.show("Error fetching production data.");
 				}
 			});
 		},
@@ -129,9 +115,15 @@ sap.ui.define([
 				compSet = {};
 			for (var i = 0; i < results.length; i++) {
 				var r = results[i];
-				if (r.Material_No) matSet[r.Material_No] = true;
-				if (r.Plant_Code) plantSet[r.Plant_Code] = true;
-				if (r.Company_Code) compSet[r.Company_Code] = true;
+				if (r.Material_No) {
+					matSet[r.Material_No] = true;
+				}
+				if (r.Plant_Code) {
+					plantSet[r.Plant_Code] = true;
+				}
+				if (r.Company_Code) {
+					compSet[r.Company_Code] = true;
+				}
 			}
 
 			this.chartModel.setProperty("/total", String(results.length));
@@ -176,7 +168,11 @@ sap.ui.define([
 			var qtyTrend = {};
 			for (var i = 0; i < data.length; i++) {
 				var item = data[i];
-				var label = monthNames[item.Startmonth] || item.Startmonth;
+				var m = item.Startmonth;
+				if (m && m.length > 2) {
+					m = m.slice(-2); // Get last 2 chars (i.e., 0006 -> 06)
+				}
+				var label = monthNames[m] || m;
 				var qty = parseFloat(item.Orderquantity || 0);
 				if (label) {
 					if (!qtyTrend[label]) {
@@ -186,20 +182,25 @@ sap.ui.define([
 				}
 			}
 
+			var categoryLabels = {
+				"10": "Standard",
+				"30": "Rush"
+			};
 			var categoryCount = {};
 			for (var j = 0; j < data.length; j++) {
-				var cat = data[j].Ordercategory || "Unknown";
+				var rawCat = data[j].Ordercategory || "Unknown";
+				var cat = categoryLabels[rawCat] || rawCat;
 				if (!categoryCount[cat]) {
 					categoryCount[cat] = 0;
 				}
 				categoryCount[cat]++;
 			}
 
-			this._setChartDataset("qtyProdTrendChart", this._groupMap(qtyTrend), "Month", "Quantity", "line");
+			this._setChartDataset("qtyProdTrendChart", this._groupMap(qtyTrend, "month"), "Month", "Quantity", "line");
 			this._setChartDataset("categoryChart", this._groupMap(categoryCount), "Category", "Count", "column");
 		},
 
-		_groupMap: function(groupObj) {
+		_groupMap: function(groupObj, type) {
 			var list = [];
 			for (var key in groupObj) {
 				if (groupObj.hasOwnProperty(key)) {
@@ -209,6 +210,14 @@ sap.ui.define([
 					});
 				}
 			}
+
+			if (type === "month") {
+				var monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+				list.sort(function(a, b) {
+					return monthOrder.indexOf(a.label) - monthOrder.indexOf(b.label);
+				});
+			}
+
 			return list;
 		},
 
