@@ -105,7 +105,7 @@
 				"viewPath": "shopFloor.view",
 				"controlId": "app",
 				"controlAggregation": "pages",
-				"transition": "fade",
+				"transition": "slide",
 				"bypassed": {
 					"target": "View1"
 				},
@@ -128,18 +128,18 @@
 				"View1": {
 					"viewId": "View1",
 					"viewName": "View1",
-					"transition": "fade"
+					"transition": "slide"
 				},
 				"Dashboard2": {
 					"viewId": "Dashboard2",
 					"viewName": "Dashboard2",
-					"transition": "fade"
+					"transition": "slide"
 				},
 
 				"Dashboard": {
 					"viewId": "Dashboard",
 					"viewName": "Dashboard",
-					"transition": "fade"
+					"transition": "slide"
 				}
 			}
 		},
