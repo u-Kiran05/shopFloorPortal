@@ -19,13 +19,13 @@ sap.ui.define([
 		init: function() {
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
-				var oModel = this.getModel();
-				oModel.setUseBatch(false); // simplify for now
-	oModel.setHeaders({
-	  "X-Requested-With": "XMLHttpRequest",
-  "X-CSRF-Token": "Fetch"
-		
-	});
+			var oModel = this.getModel();
+			oModel.setUseBatch(false); // simplify for now
+			oModel.setHeaders({
+				"X-Requested-With": "XMLHttpRequest",
+				"X-CSRF-Token": "Fetch"
+
+			});
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
 			var oSessionModel = new sap.ui.model.json.JSONModel({

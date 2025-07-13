@@ -81,30 +81,32 @@
 				</Panel>
 			</layout:Grid>
 			<!-- Data Table -->
-			<Table items="{chart>/results}" class="sapUiMediumMarginTop">
-				<columns>
-					<Column><Text text="Order No"/></Column>
-					<Column><Text text="Order Type"/></Column>
-					<Column><Text text="Plant"/></Column>
-					<Column><Text text="Company Code"/></Column>
-					<Column><Text text="Category"/></Column>
-					<Column><Text text="Quantity"/></Column>
-					<Column><Text text="Start Date"/></Column>
-				</columns>
-				<items>
-					<ColumnListItem>
-						<cells>
-							<Text text="{chart>Orderno}"/>
-							<Text text="{chart>OrderTypeCode}"/>
-							<Text text="{chart>PlantName}"/>
-							<Text text="{chart>CompanyCode}"/>
-							<Text text="{chart>Ordercategory}"/>
-							<Text text="{chart>Orderquantity}"/>
-							<Text text="{path: 'chart>Startdate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"/>
-						</cells>
-					</ColumnListItem>
-				</items>
-			</Table>
+			<Panel headerText="Production Orders Table" class="sapUiMediumMarginTop">
+				<Table items="{chart>/results}">
+					<columns>
+						<Column><Text text="Order No"/></Column>
+						<Column><Text text="Order Type"/></Column>
+						<Column><Text text="Plant"/></Column>
+						<Column><Text text="Company Code"/></Column>
+						<Column><Text text="Category"/></Column>
+						<Column><Text text="Quantity"/></Column>
+						<Column><Text text="Start Date"/></Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{chart>Orderno}"/>
+								<Text text="{chart>OrderTypeCode}"/>
+								<Text text="{chart>PlantName}"/>
+								<Text text="{chart>CompanyCode}"/>
+								<Text text="{chart>Ordercategory}"/>
+								<Text text="{chart>Orderquantity}"/>
+								<Text text="{path: 'chart>Startdate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
 		</content>
 	</Page>
 </mvc:View>
