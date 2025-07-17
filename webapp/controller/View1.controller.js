@@ -35,7 +35,7 @@ sap.ui.define([
 					success: function(oData) {
 						if (oData.Status === "Y") {
 							oMsgStrip.setVisible(false);
-							sap.ui.core.UIComponent.getRouterFor(this).navTo("Dashboard");
+							sap.ui.core.UIComponent.getRouterFor(this).navTo("View2");
 						} else {
 							oMsgStrip.setVisible(true);
 							oMsgStrip.setText("Invalid credentials.");

@@ -13,7 +13,11 @@ sap.ui.define([
 		onInit: function() {
 			this.oModel = this.getOwnerComponent().getModel("sf");
 			this.chartModel = new JSONModel({
-				results: []
+				results: [],
+				currentPage: 1,
+				pageSize: 10,
+				totalPages: 1,
+				pagedResults: []
 			});
 			this.getView().setModel(this.chartModel, "chart");
 			this._initCharts();
@@ -30,16 +34,10 @@ sap.ui.define([
 				if (oVizFrame) {
 					oVizFrame.setVizProperties({
 						plotArea: {
-							dataLabel: {
-								visible: true
-							}
+							dataLabel: { visible: true }
 						},
-						legend: {
-							visible: true
-						},
-						title: {
-							visible: false
-						}
+						legend: { visible: true },
+						title: { visible: false }
 					});
 				}
 			}, this);
@@ -71,12 +69,10 @@ sap.ui.define([
 
 		_onDataLoaded: function(oData) {
 			var results = oData.results || [];
-			this.chartModel.setProperty("/results", results);
 
 			var totalOrders = results.length;
 			var totalQty = 0;
-			var materials = {},
-				controllers = {};
+			var materials = {}, controllers = {};
 
 			results.forEach(function(item) {
 				totalQty += parseFloat(item.Orderquant || 0);
@@ -84,51 +80,85 @@ sap.ui.define([
 				controllers[item.Controllerco] = true;
 			});
 
-			this.byId("totalOrders").setNumber(String(totalOrders));
-			this.byId("totalQty").setNumber(totalQty.toFixed(2));
-			this.byId("uniqueMaterials").setNumber(String(Object.keys(materials).length));
-			this.byId("uniqueControllers").setNumber(String(Object.keys(controllers).length));
+			var pageSize = 10;
+			var currentPage = 1;
+			var totalPages = Math.ceil(results.length / pageSize);
+
+			this.chartModel.setData({
+				results: results,
+				currentPage: currentPage,
+				pageSize: pageSize,
+				totalPages: totalPages,
+				pagedResults: results.slice(0, pageSize),
+				totalOrders: totalOrders,
+				totalQty: totalQty.toFixed(2),
+				uniqueMaterials: Object.keys(materials).length,
+				uniqueControllers: Object.keys(controllers).length
+			});
 
 			this._bindCharts(results);
 		},
 
+		_updatePagedResults: function() {
+			var model = this.chartModel;
+			var all = model.getProperty("/results");
+			var page = model.getProperty("/currentPage");
+			var size = model.getProperty("/pageSize");
+
+			var start = (page - 1) * size;
+			var end = start + size;
+			model.setProperty("/pagedResults", all.slice(start, end));
+		},
+
+		onNextPage: function() {
+			var model = this.chartModel;
+			var page = model.getProperty("/currentPage");
+			var total = model.getProperty("/totalPages");
+
+			if (page < total) {
+				model.setProperty("/currentPage", page + 1);
+				this._updatePagedResults();
+			}
+		},
+
+		onPrevPage: function() {
+			var model = this.chartModel;
+			var page = model.getProperty("/currentPage");
+
+			if (page > 1) {
+				model.setProperty("/currentPage", page - 1);
+				this._updatePagedResults();
+			}
+		},
+
 		onLogoutPress: function() {
 			sap.m.MessageBox.confirm("Are you sure you want to logout?", {
+				title: "Confirm Logout",
+				icon: sap.m.MessageBox.Icon.QUESTION,
+				actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+				emphasizedAction: sap.m.MessageBox.Action.YES,
 				onClose: function(oAction) {
-					if (oAction === sap.m.MessageBox.Action.OK) {
-						this.getOwnerComponent().getModel("session").setData({});
-						this.getOwnerComponent().getRouter().navTo("View1", {}, true);
+					if (oAction === sap.m.MessageBox.Action.YES) {
+						sap.ui.core.UIComponent.getRouterFor(this).navTo("View1");
 					}
 				}.bind(this)
 			});
 		},
 
-		onNextPress: function() {
-			this.getOwnerComponent().getRouter().navTo("Dashboard2");
+
+		onBack: function() {
+			this.getOwnerComponent().getRouter().navTo("View2");
 		},
 
 		_bindCharts: function(data) {
 			var monthNames = {
-				"01": "Jan",
-				"02": "Feb",
-				"03": "Mar",
-				"04": "Apr",
-				"05": "May",
-				"06": "Jun",
-				"07": "Jul",
-				"08": "Aug",
-				"09": "Sep",
-				"10": "Oct",
-				"11": "Nov",
-				"12": "Dec"
+				"01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr",
+				"05": "May", "06": "Jun", "07": "Jul", "08": "Aug",
+				"09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec"
 			};
 
-			var ordersByMonth = {};
-			var qtyTrend = {};
-			var leadTime = {
-				"0-2 days": 0,
-				"3-5 days": 0,
-				"6+ days": 0
+			var ordersByMonth = {}, qtyTrend = {}, leadTime = {
+				"0-2 days": 0, "3-5 days": 0, "6+ days": 0
 			};
 
 			function groupBy(arr, keyFn) {
@@ -143,25 +173,20 @@ sap.ui.define([
 
 			function groupAndMap(obj) {
 				return Object.keys(obj).map(function(k) {
-					return {
-						label: k,
-						count: obj[k]
-					};
+					return { label: k, count: obj[k] };
 				});
 			}
 
 			function sortMonths(dataList) {
 				var monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-					"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-				];
+					"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 				return dataList.sort(function(a, b) {
 					return monthOrder.indexOf(a.label) - monthOrder.indexOf(b.label);
 				});
 			}
 
 			data.forEach(function(item) {
-				var monthCode = item.Startmonth;
-				monthCode = String(monthCode).padStart(2, "0").slice(-2); // Normalize to 2-digit string
+				var monthCode = String(item.Startmonth || "").padStart(2, "0");
 				var label = monthNames[monthCode] || monthCode;
 
 				ordersByMonth[label] = (ordersByMonth[label] || 0) + 1;
@@ -200,42 +225,21 @@ sap.ui.define([
 			oVizFrame.destroyDataset();
 			oVizFrame.removeAllFeeds();
 
-			oVizFrame.setModel(new JSONModel({
-				chartData: data
+			oVizFrame.setModel(new JSONModel({ chartData: data }));
+
+			oVizFrame.setDataset(new FlattenedDataset({
+				dimensions: [{ name: dim, value: "{label}" }],
+				measures: [{ name: measure, value: "{count}" }],
+				data: { path: "/chartData" }
 			}));
 
-			var oDataset = new FlattenedDataset({
-				dimensions: [{
-					name: dim,
-					value: "{label}"
-				}],
-				measures: [{
-					name: measure,
-					value: "{count}"
-				}],
-				data: {
-					path: "/chartData"
-				}
-			});
-			oVizFrame.setDataset(oDataset);
-
-			var feeds = (type === "pie" || type === "donut") ? [{
-				uid: "size",
-				type: "Measure",
-				values: [measure]
-			}, {
-				uid: "color",
-				type: "Dimension",
-				values: [dim]
-			}] : [{
-				uid: "valueAxis",
-				type: "Measure",
-				values: [measure]
-			}, {
-				uid: "categoryAxis",
-				type: "Dimension",
-				values: [dim]
-			}];
+			var feeds = (type === "pie" || type === "donut") ? [
+				{ uid: "size", type: "Measure", values: [measure] },
+				{ uid: "color", type: "Dimension", values: [dim] }
+			] : [
+				{ uid: "valueAxis", type: "Measure", values: [measure] },
+				{ uid: "categoryAxis", type: "Dimension", values: [dim] }
+			];
 
 			feeds.forEach(function(feed) {
 				oVizFrame.addFeed(new FeedItem(feed));

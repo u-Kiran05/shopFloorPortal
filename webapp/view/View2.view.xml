@@ -1,0 +1,55 @@
+<mvc:View controllerName="shopFloor.controller.View2"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	displayBlock="true">
+
+	<Page>
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Title text="Shop Floor Portal - Choose Dashboard"/>
+				</contentMiddle>
+				<contentRight>
+					<Button icon="sap-icon://log" text="Logout" press="onLogout"/>
+				</contentRight>
+			</Bar>
+		</customHeader>
+
+		<content>
+			<VBox class="sapUiSmallMargin">
+				<HBox justifyContent="Center" wrap="Wrap">
+
+					<!-- Planned Orders Tile -->
+					<VBox class="sapUiSmallMargin" width="200px">
+						<GenericTile header="Planned Orders" subheader="Shop Floor Portal"
+							press="onPlannedOrdersPress">
+							<tileContent>
+								<TileContent>
+									<content>
+										<ImageContent src="sap-icon://calendar" description="Planned Orders"/>
+									</content>
+								</TileContent>
+							</tileContent>
+						</GenericTile>
+					</VBox>
+
+					<!-- Production Orders Tile -->
+					<VBox class="sapUiSmallMargin" width="200px">
+						<GenericTile header="Production Orders" subheader="Shop Floor Portal"
+							press="onProductionOrdersPress">
+							<tileContent>
+								<TileContent>
+									<content>
+										<ImageContent src="sap-icon://factory" description="Production Orders"/>
+									</content>
+								</TileContent>
+							</tileContent>
+						</GenericTile>
+					</VBox>
+
+				</HBox>
+			</VBox>
+		</content>
+	</Page>
+</mvc:View>

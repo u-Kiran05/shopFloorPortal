@@ -21,18 +21,51 @@ sap.ui.define([
 			this.getView().setModel(this.chartModel, "chart");
 			this._initCharts();
 		},
+		onNextPage: function() {
+			var model = this.getView().getModel("chart");
+			var page = model.getProperty("/currentPage");
+			var total = model.getProperty("/totalPages");
 
-		onBackPress: function() {
-			sap.ui.core.UIComponent.getRouterFor(this).navTo("Dashboard");
+			if (page < total) {
+				model.setProperty("/currentPage", page + 1);
+				this._updatePagedResults();
+			}
+		},
+		onPrevPage: function() {
+			var model = this.getView().getModel("chart");
+			var page = model.getProperty("/currentPage");
+
+			if (page > 1) {
+				model.setProperty("/currentPage", page - 1);
+				this._updatePagedResults();
+			}
+		},
+		_updatePagedResults: function() {
+			var model = this.getView().getModel("chart");
+			var all = model.getProperty("/results");
+			var page = model.getProperty("/currentPage");
+			var size = model.getProperty("/pageSize");
+
+			var start = (page - 1) * size;
+			var end = start + size;
+			model.setProperty("/pagedResults", all.slice(start, end));
+		},
+		onBack: function() {
+			this.getOwnerComponent().getRouter().navTo("View2");
 		},
 
 		onLogoutPress: function() {
-			var oSessionModel = this.getOwnerComponent().getModel("session");
-			if (oSessionModel) {
-				oSessionModel.setData({});
-			}
-			sap.ui.core.UIComponent.getRouterFor(this).navTo("View1", {}, true);
-			MessageToast.show("You have been logged out.");
+			sap.m.MessageBox.confirm("Are you sure you want to logout?", {
+				title: "Confirm Logout",
+				icon: sap.m.MessageBox.Icon.QUESTION,
+				actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+				emphasizedAction: sap.m.MessageBox.Action.YES,
+				onClose: function(oAction) {
+					if (oAction === sap.m.MessageBox.Action.YES) {
+						sap.ui.core.UIComponent.getRouterFor(this).navTo("View1");
+					}
+				}.bind(this)
+			});
 		},
 
 		_initCharts: function() {
@@ -50,7 +83,7 @@ sap.ui.define([
 							visible: true
 						},
 						title: {
-							visible: false
+							visible: true
 						}
 					});
 				}
@@ -125,6 +158,10 @@ sap.ui.define([
 					compSet[r.Company_Code] = true;
 				}
 			}
+			this.chartModel.setProperty("/currentPage", 1);
+			this.chartModel.setProperty("/pageSize", 10);
+			this.chartModel.setProperty("/totalPages", Math.ceil(results.length / 10));
+			this._updatePagedResults();
 
 			this.chartModel.setProperty("/total", String(results.length));
 			this.chartModel.setProperty("/uniqueMaterials", String(Object.keys(matSet).length));
@@ -223,9 +260,7 @@ sap.ui.define([
 
 		_setChartDataset: function(chartId, data, dim, measure, chartType) {
 			var oViz = this.byId(chartId);
-			if (!oViz || !data || data.length === 0) {
-				return;
-			}
+			if (!oViz || !data || data.length === 0) return;
 
 			try {
 				oViz.setVizType(chartType);
@@ -252,6 +287,28 @@ sap.ui.define([
 				oViz.setDataset(oDataset);
 				oViz.setModel(oModel);
 
+				oViz.setVizProperties({
+					title: {
+						visible: true,
+						text: (chartType === "line") ? "Quantity Trend by Month" :
+							(chartType === "column") ? "Order Category Distribution" : "Chart"
+					},
+					legend: {
+						visible: true
+					},
+					plotArea: {
+						dataLabel: {
+							visible: true
+						},
+						margin: {
+							bottom: 0,
+							top: 20,
+							left: 20,
+							right: 20
+						}
+					}
+				});
+
 				oViz.addFeed(new FeedItem({
 					uid: "valueAxis",
 					type: "Measure",
@@ -266,5 +323,6 @@ sap.ui.define([
 				jQuery.sap.log.error("Chart error in " + chartId + ":", e);
 			}
 		}
+
 	});
 });

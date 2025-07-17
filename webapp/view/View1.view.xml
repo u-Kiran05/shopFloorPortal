@@ -1,20 +1,25 @@
-<mvc:View controllerName="shopFloor.controller.View1" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form"
-	displayBlock="true">
-	<Page title="Shop Floor Portal - Login">
+<mvc:View controllerName="shopFloor.controller.View1" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" displayBlock="true">
+	<Page showHeader="false" class="shopLoginPage">
 		<content>
-			<VBox class="sapUiSmallMargin">
-				<MessageStrip id="msgStrip" visible="false" type="Information" showIcon="true" showCloseButton="false" text=""/>
-				<f:SimpleForm id="SimpleFormLogin" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
-					labelSpanS="12" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
-					singleContainerFullSize="false">
-					<f:content>
-						<Label text="User ID*"/>
-						<Input id="userIdInput" placeholder="Enter User ID"/>
-						<Label text="Password*"/>
-						<Input id="passwordInput" type="Password" placeholder="Enter Password"/>
-						<Button text="Login" press="onLoginPress" type="Emphasized"/>
-					</f:content>
-				</f:SimpleForm>
+			<VBox class="loginContainer" alignItems="Center" justifyContent="Center">
+				<VBox class="loginCard" alignItems="Center" justifyContent="Center">
+					<!-- Login Title -->
+					<VBox class="logoBox" alignItems="Center">
+						<Title text="Shop Floor Portal" level="H1" class="logoText"/>
+					</VBox>
+					<!-- Message Strip for Errors -->
+					<MessageStrip id="msgStrip" visible="false" type="Error" text="" showIcon="true" showCloseButton="false" class="sapUiTinyMarginBottom"/>
+					<!-- User ID Input -->
+					<VBox class="loginInputBox">
+						<Input id="userIdInput" placeholder="User ID" class="loginInput" width="100%" showValueHelp="false"/>
+					</VBox>
+					<!-- Password Input -->
+					<VBox class="loginInputBox">
+						<Input id="passwordInput" placeholder="Password" type="Password" class="loginInput" width="100%"/>
+					</VBox>
+					<!-- Login Button -->
+					<Button text="Log On" press="onLoginPress" class="loginButton"/>
+				</VBox>
 			</VBox>
 		</content>
 	</Page>

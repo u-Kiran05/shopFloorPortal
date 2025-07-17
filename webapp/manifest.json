@@ -72,7 +72,8 @@
 				"sap.ushell": {},
 				"sap.collaboration": {},
 				"sap.ui.comp": {},
-				"sap.uxap": {}
+				"sap.uxap": {},
+				"sap.suite.ui.commons": {}
 			}
 		},
 		"models": {
@@ -120,6 +121,10 @@
 				"name": "Dashboard",
 				"target": "Dashboard"
 			}, {
+				"pattern": "View2",
+				"name": "View2",
+				"target": "View2"
+			}, {
 				"pattern": "Dashboard2",
 				"name": "Dashboard2",
 				"target": "Dashboard2"
@@ -135,7 +140,11 @@
 					"viewName": "Dashboard2",
 					"transition": "slide"
 				},
-
+				"View2": {
+					"viewId": "View2",
+					"viewName": "View2",
+					"transition": "slide"
+				},
 				"Dashboard": {
 					"viewId": "Dashboard",
 					"viewName": "Dashboard",

@@ -1,13 +1,13 @@
 <mvc:View controllerName="shopFloor.controller.Dashboard2" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout"
-	xmlns:viz="sap.viz.ui5.controls" xmlns:core="sap.ui.core">
+	xmlns:viz="sap.viz.ui5.controls" xmlns:suite="sap.suite.ui.commons" xmlns:core="sap.ui.core">
 	<Page>
 		<customHeader>
 			<Bar>
 				<contentLeft>
-					<Button icon="sap-icon://nav-back" text="Back" press="onBackPress"/>
+					<Button icon="sap-icon://nav-back" text="Back" press="onBack"/>
 				</contentLeft>
 				<contentMiddle>
-					<Title text="Shop Floor Portal - Production Dashboard"/>
+					<Title text="Production Orders"/>
 				</contentMiddle>
 				<contentRight>
 					<Button icon="sap-icon://log" text="Logout" press="onLogoutPress"/>
@@ -15,18 +15,16 @@
 			</Bar>
 		</customHeader>
 		<content>
-			<!-- Filter Section -->
+			<!-- Filters -->
 			<HBox class="sapUiSmallMargin" alignItems="Center" justifyContent="SpaceBetween">
-				<Select id="plantSelect" width="250px" change="onFilterChange">
-					<items>
-						<core:ListItem key="0001" text="Werk 0001" icon="sap-icon://factory"/>
-						<core:ListItem key="0003" text="Plant 0003 (is-ht-sw)" icon="sap-icon://building"/>
-						<core:ListItem key="1009" text="Kaar" icon="sap-icon://home"/>
-						<core:ListItem key="2206" text="Amul" icon="sap-icon://nutrition-activity"/>
-						<core:ListItem key="Z001" text="Werk 0001" icon="sap-icon://factory"/>
-					</items>
+				<Select id="plantSelect" width="200px" change="onFilterChange">
+					<core:ListItem key="0001" text="Werk 0001" icon="sap-icon://factory"/>
+					<core:ListItem key="0003" text="Plant 0003 (is-ht-sw)" icon="sap-icon://building"/>
+					<core:ListItem key="1009" text="Kaar" icon="sap-icon://home"/>
+					<core:ListItem key="2206" text="Amul" icon="sap-icon://nutrition-activity"/>
+					<core:ListItem key="Z001" text="Werk 0001" icon="sap-icon://factory"/>
 				</Select>
-				<Select id="yearPicker" width="150px">
+				<Select id="yearPicker" width="120px">
 					<core:Item key="2023" text="2023"/>
 					<core:Item key="2024" text="2024"/>
 					<core:Item key="2025" text="2025"/>
@@ -50,63 +48,77 @@
 			</HBox>
 			<!-- KPI Cards -->
 			<layout:Grid defaultSpan="L3 M6 S12" class="sapUiMediumMarginTop">
-				<Panel headerText="Total Orders" class="cardStyle">
-					<VBox class="sapUiSmallMargin">
-						<ObjectNumber id="totalOrdersProd" number="{chart>/total}" unit="Orders" class="kpiBlue"/>
-					</VBox>
-				</Panel>
-				<Panel headerText="Materials" class="cardStyle">
-					<VBox class="sapUiSmallMargin">
-						<ObjectNumber id="uniqueMaterialsProd" number="{chart>/uniqueMaterials}" unit="Items" class="kpiGreen"/>
-					</VBox>
-				</Panel>
-				<Panel headerText="Plants" class="cardStyle">
-					<VBox class="sapUiSmallMargin">
-						<ObjectNumber id="plantCountProd" number="{chart>/plants}" unit="Units" class="kpiOrange"/>
-					</VBox>
-				</Panel>
-				<Panel headerText="Companies" class="cardStyle">
-					<VBox class="sapUiSmallMargin">
-						<ObjectNumber id="companyCountProd" number="{chart>/companies}" unit="Entities" class="kpiPurple"/>
-					</VBox>
-				</Panel>
+				<VBox class="cardPanel" alignItems="Center">
+					<core:Icon src="sap-icon://factory" size="2rem" color="#0a6ed1"/>
+					<Title text="Total Orders"/>
+					<ObjectNumber number="{chart>/total}" unit="Orders"/>
+				</VBox>
+				<VBox class="cardPanel" alignItems="Center">
+					<core:Icon src="sap-icon://lead" size="2rem" color="#2b7c2b"/>
+					<Title text="Materials"/>
+					<ObjectNumber number="{chart>/uniqueMaterials}" unit="Items"/>
+				</VBox>
+				<VBox class="cardPanel" alignItems="Center">
+					<core:Icon src="sap-icon://tools-opportunity" size="2rem" color="#e9730c"/>
+					<Title text="Plants"/>
+					<ObjectNumber number="{chart>/plants}" unit="Units"/>
+				</VBox>
+				<VBox class="cardPanel" alignItems="Center">
+					<core:Icon src="sap-icon://company-view" size="2rem" color="#ab218e"/>
+					<Title text="Companies"/>
+					<ObjectNumber number="{chart>/companies}" unit="Entities"/>
+				</VBox>
 			</layout:Grid>
-			<!-- Charts -->
-			<layout:Grid defaultSpan="L6 M6 S12" class="sapUiMediumMarginTop">
-				<Panel headerText="Quantity Trend by Month" class="chartPanel chartCyan">
-					<viz:VizFrame id="qtyProdTrendChart" width="100%" height="250px"/>
-				</Panel>
-				<Panel headerText="Order Category" class="chartPanel chartPink">
-					<viz:VizFrame id="categoryChart" width="100%" height="250px"/>
-				</Panel>
-			</layout:Grid>
-			<!-- Data Table -->
-			<Panel headerText="Production Orders Table" class="sapUiMediumMarginTop">
-				<Table items="{chart>/results}">
-					<columns>
-						<Column><Text text="Order No"/></Column>
-						<Column><Text text="Order Type"/></Column>
-						<Column><Text text="Plant"/></Column>
-						<Column><Text text="Company Code"/></Column>
-						<Column><Text text="Category"/></Column>
-						<Column><Text text="Quantity"/></Column>
-						<Column><Text text="Start Date"/></Column>
-					</columns>
-					<items>
-						<ColumnListItem>
-							<cells>
-								<Text text="{chart>Orderno}"/>
-								<Text text="{chart>OrderTypeCode}"/>
-								<Text text="{chart>PlantName}"/>
-								<Text text="{chart>CompanyCode}"/>
-								<Text text="{chart>Ordercategory}"/>
-								<Text text="{chart>Orderquantity}"/>
-								<Text text="{path: 'chart>Startdate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"/>
-							</cells>
-						</ColumnListItem>
-					</items>
-				</Table>
-			</Panel>
+			<suite:ChartContainer class="sapUiMediumMarginTop">
+				<suite:content>
+					<!-- TABLE FIRST -->
+					<suite:ChartContainerContent icon="sap-icon://table-view" title="Order Table">
+						<suite:content>
+							<VBox>
+								<Toolbar>
+									<Button icon="sap-icon://nav-back" press="onPrevPage"/>
+									<Text text="{= 'Page ' + ${chart>/currentPage} + ' of ' + ${chart>/totalPages}}"/>
+									<Button icon="sap-icon://navigation-right-arrow" press="onNextPage"/>
+								</Toolbar>
+								<Table items="{chart>/pagedResults}">
+									<columns>
+										<Column><Text text="Order No"/></Column>
+										<Column><Text text="Type"/></Column>
+										<Column><Text text="Plant"/></Column>
+										<Column><Text text="Company"/></Column>
+										<Column><Text text="Category"/></Column>
+										<Column><Text text="Quantity"/></Column>
+										<Column><Text text="Start Date"/></Column>
+									</columns>
+									<items>
+										<ColumnListItem>
+											<cells>
+												<Text text="{chart>Orderno}"/>
+												<Text text="{chart>OrderTypeCode}"/>
+												<Text text="{chart>PlantName}"/>
+												<Text text="{chart>CompanyCode}"/>
+												<Text text="{chart>Ordercategory}"/>
+												<Text text="{chart>Orderquantity}"/>
+												<Text text="{path: 'chart>Startdate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"/>
+											</cells>
+										</ColumnListItem>
+									</items>
+								</Table>
+							</VBox>
+						</suite:content>
+					</suite:ChartContainerContent>
+					<!-- CHARTS BELOW -->
+					<suite:ChartContainerContent icon="sap-icon://line-chart" title="Quantity Trend">
+						<suite:content><viz:VizFrame id="qtyProdTrendChart" height="550px" width="100%"/></suite:content>
+					</suite:ChartContainerContent>
+					<suite:ChartContainerContent icon="sap-icon://bar-chart" title="Order Category">
+						<suite:content>
+							<viz:VizFrame id="categoryChart" height="550px" width="100%"
+								vizProperties="{ plotArea: { dataLabel: { visible: true }, margin: { bottom: 0, top: 20, left: 20, right: 20 } }, title: { visible: false }, valueAxis: { title: { visible: false } }, categoryAxis: { title: { visible: false } }, legend: { visible: false } }"/>
+						</suite:content>
+					</suite:ChartContainerContent>
+				</suite:content>
+			</suite:ChartContainer>
 		</content>
 	</Page>
 </mvc:View>

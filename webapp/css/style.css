@@ -1,27 +1,73 @@
-.cardStyle {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+.cardPanel {
+    padding: 1rem;
+    margin: 0.5rem;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
 }
 
-/* KPI Colors */
-.kpiBlue .sapMObjectNumberText { color: #1565c0 !important; }
-.kpiGreen .sapMObjectNumberText { color: #2e7d32 !important; }
-.kpiOrange .sapMObjectNumberText { color: #ef6c00 !important; }
-.kpiPurple .sapMObjectNumberText { color: #6a1b9a !important; }
-
-/* Chart Panels */
-.chartPanel {
-  border-radius: 8px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
-  background-color: #fafafa;
+.cardPanel .sapMTitle {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+.shopLoginPage {
+    background-image: url("https://cdn.imgchest.com/files/7lxcpx9zw87.png");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
 }
 
-.chartBlue .sapMPanelHdr { background-color: #e3f2fd !important; }
-.chartGreen .sapMPanelHdr { background-color: #e8f5e9 !important; }
-.chartOrange .sapMPanelHdr { background-color: #fff3e0 !important; }
-.chartPurple .sapMPanelHdr { background-color: #f3e5f5 !important; }
-.chartCyan .sapMPanelHdr { background-color: #e0f7fa !important; }
-.chartRed .sapMPanelHdr { background-color: #ffebee !important; }
-.chartPink .sapMPanelHdr { background-color: #fce4ec !important; }
-.chartTeal .sapMPanelHdr { background-color: #e0f2f1 !important; }
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loginCard {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.5);
+    width: 350px;
+}
+
+.logoBox {
+    margin-bottom: 2rem;
+}
+
+.logoText {
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.loginInput {
+    margin-bottom: 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+ 
+    border-radius: 12px;
+    padding: 0.5rem;
+}
+
+.loginInputBox {
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.loginButton {
+    margin: 0 auto;
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    display: block;
+}
