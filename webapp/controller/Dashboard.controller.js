@@ -34,10 +34,16 @@ sap.ui.define([
 				if (oVizFrame) {
 					oVizFrame.setVizProperties({
 						plotArea: {
-							dataLabel: { visible: true }
+							dataLabel: {
+								visible: true
+							}
 						},
-						legend: { visible: true },
-						title: { visible: false }
+						legend: {
+							visible: true
+						},
+						title: {
+							visible: true
+						}
 					});
 				}
 			}, this);
@@ -72,7 +78,8 @@ sap.ui.define([
 
 			var totalOrders = results.length;
 			var totalQty = 0;
-			var materials = {}, controllers = {};
+			var materials = {},
+				controllers = {};
 
 			results.forEach(function(item) {
 				totalQty += parseFloat(item.Orderquant || 0);
@@ -145,21 +152,33 @@ sap.ui.define([
 			});
 		},
 
-
 		onBack: function() {
 			this.getOwnerComponent().getRouter().navTo("View2");
 		},
 
 		_bindCharts: function(data) {
 			var monthNames = {
-				"01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr",
-				"05": "May", "06": "Jun", "07": "Jul", "08": "Aug",
-				"09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec"
+				"01": "Jan",
+				"02": "Feb",
+				"03": "Mar",
+				"04": "Apr",
+				"05": "May",
+				"06": "Jun",
+				"07": "Jul",
+				"08": "Aug",
+				"09": "Sep",
+				"10": "Oct",
+				"11": "Nov",
+				"12": "Dec"
 			};
 
-			var ordersByMonth = {}, qtyTrend = {}, leadTime = {
-				"0-2 days": 0, "3-5 days": 0, "6+ days": 0
-			};
+			var ordersByMonth = {},
+				qtyTrend = {},
+				leadTime = {
+					"0-2 days": 0,
+					"3-5 days": 0,
+					"6+ days": 0
+				};
 
 			function groupBy(arr, keyFn) {
 				return arr.reduce(function(result, item) {
@@ -173,13 +192,17 @@ sap.ui.define([
 
 			function groupAndMap(obj) {
 				return Object.keys(obj).map(function(k) {
-					return { label: k, count: obj[k] };
+					return {
+						label: k,
+						count: obj[k]
+					};
 				});
 			}
 
 			function sortMonths(dataList) {
 				var monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-					"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+					"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+				];
 				return dataList.sort(function(a, b) {
 					return monthOrder.indexOf(a.label) - monthOrder.indexOf(b.label);
 				});
@@ -221,29 +244,73 @@ sap.ui.define([
 			else if (chartId.includes("controller")) type = "stacked_bar";
 			else if (chartId.includes("status")) type = "stacked_column";
 
+			var chartTitles = {
+				"ordersByMonthChart": "Planned Orders by Month",
+				"materialChart": "Orders by Material",
+				"controllerChart": "Orders by Controller",
+				"statusChart": "Status Distribution",
+				"qtyTrendChart": "Quantity Trend",
+				"leadTimeChart": "Lead Time Analysis"
+			};
+
 			oVizFrame.setVizType(type);
 			oVizFrame.destroyDataset();
 			oVizFrame.removeAllFeeds();
-
-			oVizFrame.setModel(new JSONModel({ chartData: data }));
-
-			oVizFrame.setDataset(new FlattenedDataset({
-				dimensions: [{ name: dim, value: "{label}" }],
-				measures: [{ name: measure, value: "{count}" }],
-				data: { path: "/chartData" }
+			oVizFrame.setModel(new JSONModel({
+				chartData: data
 			}));
 
-			var feeds = (type === "pie" || type === "donut") ? [
-				{ uid: "size", type: "Measure", values: [measure] },
-				{ uid: "color", type: "Dimension", values: [dim] }
-			] : [
-				{ uid: "valueAxis", type: "Measure", values: [measure] },
-				{ uid: "categoryAxis", type: "Dimension", values: [dim] }
-			];
+			oVizFrame.setDataset(new FlattenedDataset({
+				dimensions: [{
+					name: dim,
+					value: "{label}"
+				}],
+				measures: [{
+					name: measure,
+					value: "{count}"
+				}],
+				data: {
+					path: "/chartData"
+				}
+			}));
+
+			var feeds = (type === "pie" || type === "donut") ? [{
+				uid: "size",
+				type: "Measure",
+				values: [measure]
+			}, {
+				uid: "color",
+				type: "Dimension",
+				values: [dim]
+			}] : [{
+				uid: "valueAxis",
+				type: "Measure",
+				values: [measure]
+			}, {
+				uid: "categoryAxis",
+				type: "Dimension",
+				values: [dim]
+			}];
 
 			feeds.forEach(function(feed) {
 				oVizFrame.addFeed(new FeedItem(feed));
 			});
+
+			oVizFrame.setVizProperties({
+				plotArea: {
+					dataLabel: {
+						visible: true
+					}
+				},
+				legend: {
+					visible: true
+				},
+				title: {
+					visible: true,
+					text: chartTitles[chartId] || (dim + " vs " + measure)
+				}
+			});
 		}
+
 	});
 });

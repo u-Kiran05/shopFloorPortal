@@ -76,7 +76,7 @@
 			</layout:Grid>
 			<!-- Charts Container -->
 			<!-- Unified ChartContainer with Table as one tab -->
-			<suite:ChartContainer autoAdjustHeight="true" showZoom="true" class="sapUiMediumMarginTop">
+			<suite:ChartContainer autoAdjustHeight="true" title="Planned Orders" showZoom="true" class="sapUiMediumMarginTop">
 				<suite:content>
 					<!-- TABLE TAB - moved to top -->
 					<suite:ChartContainerContent title="Planned Orders Table" icon="sap-icon://table-view">
