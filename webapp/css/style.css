@@ -12,7 +12,7 @@
     margin-bottom: 0.5rem;
 }
 .shopLoginPage {
-    background-image: url("https://cdn.imgchest.com/files/7lxcpx9zw87.png");
+    background-image: url("https://cdn.imgchest.com/files/7mmc9nweqp7.png");
     background-size: cover;
     background-position: center;
     height: 100%;
@@ -45,7 +45,7 @@
 
 .loginInput {
     margin-bottom: 1rem;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: transparent;
     color: white;
  
     border-radius: 12px;
@@ -68,6 +68,6 @@
     padding: 0.75rem 1rem;
     font-size: 1rem;
     border: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
     display: block;
 }

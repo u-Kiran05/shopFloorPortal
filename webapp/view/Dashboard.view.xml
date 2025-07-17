@@ -49,7 +49,7 @@
 						<core:Item key="12" text="Dec"/>
 					</items>
 				</Select>
-				<Button text="Apply Filter" press="onApplyFilter"/>
+				<Button text="Apply Filter" press="onApplyFilter"  icon="sap-icon://filter"/>
 			</HBox>
 			<!-- KPI Cards -->
 			<layout:Grid defaultSpan="L3 M3 S12" class="sapUiMediumMarginTop">
