@@ -8,3 +8,13 @@ fioriHtmlRunner.html
 .*/fioriHtmlRunner.html
 visual_ext_index.html
 /webapp/visual_ext_index.html
+node_modules/
+dist/
+.scp/
+.env
+Makefile*.mta
+mta_archives
+mta-*
+resources
+archive.zip
+.*_mta_build_tmp
