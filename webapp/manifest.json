@@ -1,173 +1,177 @@
 {
-    "_version": "1.7.0",
-    "sap.app": {
-        "id": "shopFloor",
-        "type": "application",
-        "i18n": "i18n/i18n.properties",
-        "applicationVersion": {
-            "version": "1.0.0"
-        },
-        "title": "{{appTitle}}",
-        "description": "{{appDescription}}",
-        "sourceTemplate": {
-            "id": "servicecatalog.connectivityComponent",
-            "version": "0.0.0",
-            "toolsId": "66a228b8-1875-4725-a105-6faebf56af3c"
-        },
-        "dataSources": {
-            "ZSEGW_EMPLOGIN_SRV": {
-                "uri": "/sap/opu/odata/sap/ZSEGW_EMPLOGIN_SRV/",
-                "type": "OData",
-                "settings": {
-                    "odataVersion": "2.0",
-                    "localUri": "localService/metadata.xml"
-                }
-            },
-            "ZSEGW_SF_SRV": {
-                "uri": "/sap/opu/odata/sap/ZSEGW_SF_SRV/",
-                "type": "OData",
-                "settings": {
-                    "odataVersion": "2.0",
-                    "localUri": "localService/ZSEGW_SF_SRV/metadata.xml"
-                }
-            }
-        }
+  "_version": "1.7.0",
+  "sap.app": {
+    "id": "shopFloor",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "1.0.0"
     },
-    "sap.ui": {
-        "resources": {
-            "cachebuster": {
-                "enabled": false
-            }
-        },
-        "technology": "UI5",
-        "icons": {
-            "icon": "",
-            "favIcon": "",
-            "phone": "",
-            "phone@2": "",
-            "tablet": "",
-            "tablet@2": ""
-        },
-        "deviceTypes": {
-            "desktop": true,
-            "tablet": true,
-            "phone": true
-        },
-        "supportedThemes": [
-            "sap_hcb",
-            "sap_belize"
-        ]
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "sourceTemplate": {
+      "id": "servicecatalog.connectivityComponent",
+      "version": "0.0.0",
+      "toolsId": "66a228b8-1875-4725-a105-6faebf56af3c"
     },
-    "sap.ui5": {
-        "rootView": {
-            "viewName": "shopFloor.view.App",
-            "type": "XML",
-            "id": "app"
-        },
-        "dependencies": {
-            "minUI5Version": "1.30.0",
-            "libs": {
-                "sap.ui.core": {},
-                "sap.m": {},
-                "sap.ui.layout": {},
-                "sap.ushell": {},
-                "sap.collaboration": {},
-                "sap.ui.comp": {},
-                "sap.uxap": {},
-                "sap.suite.ui.commons": {}
-            }
-        },
-        "models": {
-            "": {
-                "dataSource": "ZSEGW_EMPLOGIN_SRV",
-                "settings": {
-                    "defaultBindingMode": "TwoWay"
-                }
-            },
-            "i18n": {
-                "type": "sap.ui.model.resource.ResourceModel",
-                "settings": {
-                    "bundleName": "shopFloor.i18n.i18n"
-                }
-            },
-            "session": {
-                "type": "sap.ui.model.json.JSONModel"
-            },
-            "sf": {
-                "dataSource": "ZSEGW_SF_SRV",
-                "settings": {
-                    "defaultBindingMode": "TwoWay"
-                }
-            }
-        },
-        "routing": {
-            "config": {
-                "routerClass": "sap.m.routing.Router",
-                "viewType": "XML",
-                "viewPath": "shopFloor.view",
-                "controlId": "app",
-                "controlAggregation": "pages",
-                "transition": "slide",
-                "bypassed": {
-                    "target": "View1"
-                },
-                "async": true
-            },
-            "routes": [
-                {
-                    "pattern": "",
-                    "name": "View1",
-                    "target": "View1"
-                },
-                {
-                    "pattern": "Dashboard",
-                    "name": "Dashboard",
-                    "target": "Dashboard"
-                },
-                {
-                    "pattern": "View2",
-                    "name": "View2",
-                    "target": "View2"
-                },
-                {
-                    "pattern": "Dashboard2",
-                    "name": "Dashboard2",
-                    "target": "Dashboard2"
-                }
-            ],
-            "targets": {
-                "View1": {
-                    "viewId": "View1",
-                    "viewName": "View1",
-                    "transition": "slide"
-                },
-                "Dashboard2": {
-                    "viewId": "Dashboard2",
-                    "viewName": "Dashboard2",
-                    "transition": "slide"
-                },
-                "View2": {
-                    "viewId": "View2",
-                    "viewName": "View2",
-                    "transition": "slide"
-                },
-                "Dashboard": {
-                    "viewId": "Dashboard",
-                    "viewName": "Dashboard",
-                    "transition": "slide"
-                }
-            }
-        },
-        "contentDensities": {
-            "compact": true,
-            "cozy": true
-        },
-        "resources": {
-            "css": [
-                {
-                    "uri": "css/style.css"
-                }
-            ]
+    "dataSources": {
+      "ZSEGW_EMPLOGIN_SRV": {
+        "uri": "/sap/opu/odata/sap/ZSEGW_EMPLOGIN_SRV/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
         }
+      },
+      "ZSEGW_SF_SRV": {
+        "uri": "/sap/opu/odata/sap/ZSEGW_SF_SRV/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "localUri": "localService/ZSEGW_SF_SRV/metadata.xml"
+        }
+      }
     }
+  },
+  "sap.ui": {
+    "resources": {
+      "cachebuster": {
+        "enabled": false
+      }
+    },
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    },
+    "supportedThemes": [
+      "sap_hcb",
+      "sap_belize"
+    ]
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "shopFloor.view.App",
+      "type": "XML",
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.30.0",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
+        "sap.ui.layout": {},
+        "sap.ushell": {},
+        "sap.collaboration": {},
+        "sap.ui.comp": {},
+        "sap.uxap": {},
+        "sap.suite.ui.commons": {}
+      }
+    },
+    "models": {
+      "": {
+        "dataSource": "ZSEGW_EMPLOGIN_SRV",
+        "settings": {
+          "defaultBindingMode": "TwoWay"
+        }
+      },
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "shopFloor.i18n.i18n"
+        }
+      },
+      "session": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "sf": {
+        "dataSource": "ZSEGW_SF_SRV",
+        "settings": {
+          "defaultBindingMode": "TwoWay"
+        }
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "shopFloor.view",
+        "controlId": "app",
+        "controlAggregation": "pages",
+        "transition": "slide",
+        "bypassed": {
+          "target": "View1"
+        },
+        "async": true
+      },
+      "routes": [
+        {
+          "pattern": "",
+          "name": "View1",
+          "target": "View1"
+        },
+        {
+          "pattern": "Dashboard",
+          "name": "Dashboard",
+          "target": "Dashboard"
+        },
+        {
+          "pattern": "View2",
+          "name": "View2",
+          "target": "View2"
+        },
+        {
+          "pattern": "Dashboard2",
+          "name": "Dashboard2",
+          "target": "Dashboard2"
+        }
+      ],
+      "targets": {
+        "View1": {
+          "viewId": "View1",
+          "viewName": "View1",
+          "transition": "slide"
+        },
+        "Dashboard2": {
+          "viewId": "Dashboard2",
+          "viewName": "Dashboard2",
+          "transition": "slide"
+        },
+        "View2": {
+          "viewId": "View2",
+          "viewName": "View2",
+          "transition": "slide"
+        },
+        "Dashboard": {
+          "viewId": "Dashboard",
+          "viewName": "Dashboard",
+          "transition": "slide"
+        }
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "shopFloor"
+  }
 }
