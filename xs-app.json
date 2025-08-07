@@ -7,7 +7,7 @@
       "target": "/sap/$1",
       "destination": "ZEHSM_ODATA_DEST",
       "authenticationType": "none",
-      "csrfProtection": false
+      "csrfProtection": true
     },
     {
       "source": "^/resources/(.*)$",
