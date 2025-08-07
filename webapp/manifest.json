@@ -28,6 +28,7 @@
         "type": "OData",
         "settings": {
           "odataVersion": "2.0",
+          "sap-client": "100",
           "localUri": "localService/ZSEGW_SF_SRV/metadata.xml"
         }
       }

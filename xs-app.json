@@ -1,12 +1,12 @@
 {
   "welcomeFile": "/index.html",
-  "authenticationMethod": "none",
+  "authenticationMethod": "route",
   "routes": [
     {
       "source": "^/sap/(.*)$",
       "target": "/sap/$1",
       "destination": "ZEHSM_ODATA_DEST",
-      "authenticationType": "none",
+      "authenticationType": "xsuaa",
       "csrfProtection": false
     },
     {
@@ -25,7 +25,8 @@
       "source": "^(.*)$",
       "target": "$1",
       "service": "html5-apps-repo-rt",
-      "authenticationType": "none"
+      "authenticationType": "xsuaa"
     }
   ]
 }
+
